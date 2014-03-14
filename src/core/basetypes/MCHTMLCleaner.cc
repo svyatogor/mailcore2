@@ -35,6 +35,8 @@ String * HTMLCleaner::cleanHTML(String * input)
     tidyBufAppend(&docbuf, data->bytes(), data->length());
     
     tidyOptSetBool(tdoc, TidyXhtmlOut, yes);
+    tidyOptSetBool(tdoc, TidyMakeBare, yes);
+    tidyOptSetBool(tdoc, TidyMark, no);
     tidySetCharEncoding(tdoc, "utf8");
     tidyOptSetBool(tdoc, TidyForceOutput, yes);
     //tidyOptSetValue(tdoc, TidyErrFile, "/dev/null");

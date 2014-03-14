@@ -9,6 +9,7 @@ namespace mailcore {
         ConnectionTypeClear             = 1 << 0,
         ConnectionTypeStartTLS          = 1 << 1,
         ConnectionTypeTLS               = 1 << 2,
+        ConnectionTypeSmartTLS          = 1 << 3,
     };
 
     enum AuthType {

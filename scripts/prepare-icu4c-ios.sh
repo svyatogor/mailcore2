@@ -30,7 +30,7 @@ srcdir="$tempbuilddir/src"
 logdir="$tempbuilddir/log"
 resultdir="$builddir/builds"
 tmpdir="$tempbuilddir/tmp"
-
+build_version="51_1~2"
 if test -f "$resultdir/icu4c-ios-$build_version.zip" ; then
 	echo install from cache
 	rm -rf ../Externals/icu4c-ios

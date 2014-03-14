@@ -11,6 +11,7 @@ typedef enum {
     MCOConnectionTypeStartTLS          = 1 << 1,
     /** Encrypted connection using TLS/SSL.*/
     MCOConnectionTypeTLS               = 1 << 2,
+    MCOConnectionTypeSmartTLS          = 1 << 3,
 } MCOConnectionType;
 
 /** It's the authentication type.*/

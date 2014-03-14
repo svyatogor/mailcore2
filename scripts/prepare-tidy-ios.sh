@@ -32,14 +32,14 @@ mkdir -p "$srcdir"
 pushd . >/dev/null
 mkdir -p "$builddir/downloads"
 cd "$builddir/downloads"
-if test -d tidy-html5 ; then
-	cd tidy-html5
-	git pull --rebase
-else
-	git clone $url
-	cd tidy-html5
-fi
-version=`git rev-parse HEAD | cut -c1-10`
+# if test -d tidy-html5 ; then
+#   cd tidy-html5
+#   git pull --rebase
+# else
+#   git clone $url
+#   cd tidy-html5
+# fi
+version="74e443dfee~1"
 
 if test -f "$resultdir/tidy-html5-ios-$version.zip" ; then
 	echo install from cache
@@ -52,6 +52,9 @@ if test -f "$resultdir/tidy-html5-ios-$version.zip" ; then
   ln -sf "$resultdir/tidy-html5-ios-$version.zip" ../Externals/installed
 	rm -rf ../Externals/tmp
 	exit 0
+else
+  echo "Version $version not found"
+  exit 1
 fi
 popd >/dev/null
 

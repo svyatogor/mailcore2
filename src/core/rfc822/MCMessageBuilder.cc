@@ -698,6 +698,109 @@ Data * MessageBuilder::dataAndFilterBcc(bool filterBcc)
     return data;
 }
 
+Data * MessageBuilder::content()
+{
+    Data * data;
+    MMAPString * str;
+    int col;
+
+    struct mailmime * htmlPart;
+    struct mailmime * textPart;
+    struct mailmime * altPart;
+    struct mailmime * mainPart;
+
+    htmlPart = NULL;
+    textPart = NULL;
+    altPart = NULL;
+    mainPart = NULL;
+
+    if (htmlBody() != NULL) {
+        Attachment * htmlAttachment;
+
+        htmlAttachment = Attachment::attachmentWithHTMLString(htmlBody());
+        htmlPart = multipart_related_from_attachments(htmlAttachment, mRelatedAttachments,
+            MCUTF8(mBoundaryPrefix));
+    }
+
+    if (textBody() != NULL) {
+        Attachment * textAttachment;
+
+        textAttachment = Attachment::attachmentWithText(textBody());
+        textPart = mime_from_attachment(textAttachment);
+    }
+    else if (htmlBody() != NULL) {
+        Attachment * textAttachment;
+
+        textAttachment = Attachment::attachmentWithText(htmlBody()->flattenHTML());
+        textPart = mime_from_attachment(textAttachment);
+    }
+
+    if ((textPart != NULL) && (htmlPart != NULL)) {
+        altPart = get_multipart_alternative(MCUTF8(mBoundaryPrefix));
+        mailmime_smart_add_part(altPart, textPart);
+        mailmime_smart_add_part(altPart, htmlPart);
+        mainPart = altPart;
+    }
+    else if (textPart != NULL) {
+        mainPart = textPart;
+    }
+    else if (htmlPart != NULL) {
+        mainPart = htmlPart;
+    }
+
+    struct mailimf_fields * fields;
+    unsigned int i;
+    struct mailmime * mime;
+
+    mime = mailmime_new_message_data(NULL);
+
+    if (mainPart != NULL) {
+        add_attachment(mime, mainPart, MCUTF8(mBoundaryPrefix));
+    }
+
+    if (attachments() != NULL) {
+        for(i = 0 ; i < attachments()->count() ; i ++) {
+            Attachment * attachment;
+            struct mailmime * submime;
+
+            attachment = (Attachment *) attachments()->objectAtIndex(i);
+            submime = mime_from_attachment(attachment);
+            add_attachment(mime, submime, MCUTF8(mBoundaryPrefix));
+        }
+    }
+
+    str = mmap_string_new("");
+    col = 0;
+    mailmime_write_mem(str, &col, mime);
+    data = Data::dataWithBytes(str->str, (unsigned int) str->len);
+    mmap_string_free(str);
+    mailmime_free(mime);
+
+    return data;
+}
+
+Data * MessageBuilder::headers() {
+    Data * data;
+    MMAPString * str;
+    int col;
+    struct mailimf_fields * fields;
+    unsigned int i;
+    struct mailmime * mime;
+    fields = header()->createIMFFieldsAndFilterBcc(false);
+
+    mime = mailmime_new_message_data(NULL);
+    mailmime_set_imf_fields(mime, fields);
+
+    str = mmap_string_new("");
+    col = 0;
+    mailmime_write_mem(str, &col, mime);
+    data = Data::dataWithBytes(str->str, (unsigned int) str->len);
+    mmap_string_free(str);
+    mailmime_free(mime);
+
+    return data;
+}
+
 Data * MessageBuilder::data()
 {
     return dataAndFilterBcc(false);

@@ -27,6 +27,8 @@
 /** Creates an index set with a single integer.*/
 + (MCOIndexSet *) indexSetWithIndex:(uint64_t)idx;
 
++ (MCOIndexSet *) indexSetWithLocation:(uint64_t)location length:(uint64_t)length;
+
 /** Returns the number of integers in that index set.*/
 - (unsigned int) count;
 

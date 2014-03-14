@@ -39,7 +39,10 @@ namespace mailcore {
 		virtual String * boundaryPrefix();
 		
 		virtual Data * data();
-        
+
+		virtual Data * content();
+		virtual Data * headers();
+
         virtual String * htmlRendering(HTMLRendererTemplateCallback * htmlCallback = NULL);
         virtual String * htmlBodyRendering();
         

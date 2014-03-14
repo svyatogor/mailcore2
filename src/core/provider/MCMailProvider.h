@@ -50,19 +50,20 @@ namespace mailcore {
 		virtual Object * copy();
 
     public: // private
-		virtual void setIdentifier(String * identifier);
-		virtual void fillWithInfo(HashMap * info);
+        virtual void setIdentifier(String * identifier);
+        virtual void fillWithInfo(HashMap * info);
         
-	private:
-		String * mIdentifier;
-		Array * /* String */ mDomainMatch;
-		Array * /* NetService */ mImapServices;
-		Array * /* NetService */ mSmtpServices;
-		Array * /* NetService */ mPopServices;
-		HashMap * mMailboxPaths;
-		Set * mMxSet;
-		
-		void init();
+    private:
+        String * mIdentifier;
+        Array * /* String */ mDomainMatch;
+        Array * /* String */ mMxMatch;
+        Array * /* NetService */ mImapServices;
+        Array * /* NetService */ mSmtpServices;
+        Array * /* NetService */ mPopServices;
+        HashMap * mMailboxPaths;
+        
+        virtual bool matchDomain(String * match, String * domain);
+        void init();
     };
 };
 

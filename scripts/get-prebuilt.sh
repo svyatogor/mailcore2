@@ -13,7 +13,7 @@ if test x$1 != xskipprebuilt ; then
   if test ! -d ../Externals/prebuilt ; then
     age=1
   fi
-  if test $age -gt 0 ; then
+  #if test $age -gt 0 ; then
     networkerror=no
     #echo "$url_prefix/prebuilt.list"
     curl -s -L "$url_prefix/prebuilt.list" > prebuilt.list.tmp
@@ -45,5 +45,5 @@ if test x$1 != xskipprebuilt ; then
       rsync --exclude=.git -av mailcore2-deps/ ../builds/builds/
       popd
     fi
-  fi
+    #fi
 fi

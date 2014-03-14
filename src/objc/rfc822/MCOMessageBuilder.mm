@@ -66,6 +66,16 @@ MCO_OBJC_SYNTHESIZE_STRING(setBoundaryPrefix, boundaryPrefix)
     return MCO_OBJC_BRIDGE_GET(data);
 }
 
+- (NSData *) content
+{
+    return MCO_OBJC_BRIDGE_GET(content);
+}
+
+- (NSData *) headers
+{
+    return MCO_OBJC_BRIDGE_GET(headers);
+}
+
 - (NSString *) htmlRenderingWithDelegate:(id <MCOHTMLRendererDelegate>)delegate
 {
     MCOAbstractMessageRendererCallback * htmlRenderCallback = new MCOAbstractMessageRendererCallback(self, delegate, NULL);
