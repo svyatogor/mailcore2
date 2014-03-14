@@ -240,7 +240,7 @@ mailcore::String * HTMLRendererTemplateCallback::templateForEmbeddedMessage(Abst
 
 mailcore::String * HTMLRendererTemplateCallback::templateForAttachmentSeparator()
 {
-    return MCSTR("<hr/>");
+    return MCSTR("");
 }
 
 mailcore::String * HTMLRendererTemplateCallback::filterHTMLForMessage(mailcore::String * html)

@@ -241,7 +241,38 @@ void SMTPSession::connect(ErrorCode * pError)
     setup();
     
     switch (mConnectionType) {
+        case ConnectionTypeSmartTLS:
+            MCLog("smart ssl connect %s %u", MCUTF8(hostname()), (unsigned int) port());
+            r = mailsmtp_ssl_connect(mSmtp, MCUTF8(mHostname), port());
+            if (r != MAILSMTP_NO_ERROR) {
+                * pError = ErrorConnection;
+                MCLog("plain ssl failed, will try starttls");
+                goto start_tls;
+            }
+            if (!checkCertificate()) {
+                * pError = ErrorCertificate;
+                goto close;
+            }
+        
+            MCLog("init");
+            if (useHeloIPEnabled()) {
+                r = mailsmtp_init_with_ip(mSmtp, 1);
+            } else {
+                r = mailsmtp_init(mSmtp);
+            }
+            if (r == MAILSMTP_ERROR_STREAM) {
+                * pError = ErrorConnection;
+                goto close;
+            }
+            else if (r != MAILSMTP_NO_ERROR) {
+                * pError = ErrorConnection;
+                goto close;
+            }
+            
+            break;
+            
         case ConnectionTypeStartTLS:
+start_tls:
             MCLog("connect %s %u", MCUTF8(hostname()), (unsigned int) port());
             r = mailsmtp_socket_connect(mSmtp, MCUTF8(hostname()), port());
             if (r != MAILSMTP_NO_ERROR) {

@@ -128,6 +128,9 @@ HashMap * NetService::info()
         case ConnectionTypeStartTLS:
             result->setObjectForKey(MCSTR("starttls"), Value::valueWithBoolValue(true));
             break;
+        // case ConnectionTypeSmartTLS:
+        //     result->setObjectForKey(MCSTR("smarttls"), Value::valueWithBoolValue(true));
+        //     break;            
         default:
             break;
     }

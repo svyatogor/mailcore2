@@ -36,22 +36,23 @@ mkdir -p "$logdir"
 mkdir -p "$tmpdir"
 mkdir -p "$srcdir"
 
-pushd . >/dev/null
-mkdir -p "$builddir/downloads"
-cd "$builddir/downloads"
-if test -d libetpan ; then
-	cd libetpan
-	git pull --rebase
-else
-	git clone $url
-	cd libetpan
-fi
+# pushd . >/dev/null
+# mkdir -p "$builddir/downloads"
+# cd "$builddir/downloads"
+# if test -d libetpan ; then
+#   cd libetpan
+#   git pull --rebase
+# else
+#   git clone $url
+#   cd libetpan
+# fi
 #version=`git rev-parse HEAD | cut -c1-10`
-version=`echo $rev | cut -c1-10`
+# version=`echo $rev | cut -c1-10`
+version="6c030e4f5c"
 
 if test -f "$resultdir/libetpan-ios-$version.zip" ; then
 	echo install from cache
-	popd >/dev/null
+  # popd >/dev/null
 	rm -rf ../Externals/libetpan-ios
 	rm -rf ../Externals/libsasl-ios
 	mkdir -p ../Externals/tmp
@@ -64,6 +65,9 @@ if test -f "$resultdir/libetpan-ios-$version.zip" ; then
   ln -sf "$resultdir/libsasl-ios-$version.zip" ../Externals/installed
 	rm -rf ../Externals/tmp
 	exit 0
+else
+  echo "OUCH!"
+  exit 1
 fi
 popd >/dev/null
 

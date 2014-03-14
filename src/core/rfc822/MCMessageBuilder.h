@@ -30,16 +30,19 @@ namespace mailcore {
         // attachments (usually images) that are included in HTML.
         // a Content-ID should be assigned to these part to be able to reference
         // them in the HTML using a cid: URL.
-        virtual void setRelatedAttachments(Array * /* Attachment */ attachments);
-        virtual Array * /* Attachment */ relatedAttachments();
-        virtual void addRelatedAttachment(Attachment * attachment);
-        
-        // When boundary needs to be prefixed (to go through spam filters).
-        virtual void setBoundaryPrefix(String * boundaryPrefix);
-        virtual String * boundaryPrefix();
-        
-        virtual Data * data();
-        
+		virtual void setRelatedAttachments(Array * /* Attachment */ attachments);
+		virtual Array * /* Attachment */ relatedAttachments();
+		virtual void addRelatedAttachment(Attachment * attachment);
+		
+		// When boundary needs to be prefixed (to go through spam filters).
+		virtual void setBoundaryPrefix(String * boundaryPrefix);
+		virtual String * boundaryPrefix();
+		
+		virtual Data * data();
+
+		virtual Data * content();
+		virtual Data * headers();
+
         virtual String * htmlRendering(HTMLRendererTemplateCallback * htmlCallback = NULL);
         virtual String * htmlBodyRendering();
         

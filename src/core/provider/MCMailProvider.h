@@ -53,7 +53,7 @@ namespace mailcore {
     public: // private
         virtual void setIdentifier(String * identifier);
         virtual void fillWithInfo(HashMap * info);
-        
+
     private:
         String * mIdentifier;
         Array * /* String */ mDomainMatch;
@@ -62,7 +62,7 @@ namespace mailcore {
         Array * /* NetService */ mSmtpServices;
         Array * /* NetService */ mPopServices;
         HashMap * mMailboxPaths;
-        
+
         virtual bool matchDomain(String * match, String * domain);
         void init();
     };

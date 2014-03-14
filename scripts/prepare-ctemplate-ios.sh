@@ -34,23 +34,23 @@ mkdir -p "$resultdir"
 mkdir -p "$logdir"
 mkdir -p "$tmpdir"
 mkdir -p "$srcdir"
-
-pushd . >/dev/null
-mkdir -p "$builddir/downloads"
-cd "$builddir/downloads"
-if test -d ctemplate ; then
-	cd ctemplate
-	git pull --rebase
-else
-	git clone $url
-	cd ctemplate
-fi
-version=`git rev-parse HEAD | cut -c1-10`
-build_version="$version~1"
+# 
+# pushd . >/dev/null
+# mkdir -p "$builddir/downloads"
+# cd "$builddir/downloads"
+# if test -d ctemplate ; then
+#   cd ctemplate
+#   git pull --rebase
+# else
+#   git clone $url
+#   cd ctemplate
+# fi
+# version=`git rev-parse HEAD | cut -c1-10`
+version="ccca4faf79~1"
 
 if test -f "$resultdir/ctemplate-ios-$build_version.zip" ; then
 	echo install from cache
-	popd >/dev/null
+  # popd >/dev/null
 	rm -rf ../Externals/ctemplate-ios
 	mkdir -p ../Externals/tmp
 	unzip -q "$resultdir/ctemplate-ios-$build_version.zip" -d ../Externals/tmp

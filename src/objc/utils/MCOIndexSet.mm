@@ -87,6 +87,14 @@ MCO_SYNTHESIZE_NSCODING
     return indexSet;
 }
 
++ (MCOIndexSet *) indexSetWithLocation:(uint64_t)location length:(uint64_t)length
+{
+  MCOIndexSet * indexSet;
+  indexSet = [[[MCOIndexSet alloc] init] autorelease];
+  [indexSet addRange:MCORangeMake(location, length)];
+  return indexSet;
+}
+
 - (NSString *) description
 {
     return MCO_OBJC_BRIDGE_GET(description);

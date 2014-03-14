@@ -620,6 +620,31 @@ void IMAPSession::connect(ErrorCode * pError)
     MCAssert(mState == STATE_DISCONNECTED);
     
     switch (mConnectionType) {
+        case ConnectionTypeSmartTLS:
+        r = mailimap_ssl_connect_voip(mImap, MCUTF8(mHostname), mPort, isVoIPEnabled());
+        MCLog("smart ssl connect %s %u %u", MCUTF8(mHostname), mPort, r);
+        if (hasError(r)) {
+            MCLog("direct ssl failed, using STARTTLS connect");
+            r = mailimap_socket_connect_voip(mImap, MCUTF8(mHostname), mPort, isVoIPEnabled());
+            if (hasError(r)) {
+                * pError = ErrorConnection;
+                goto close;
+            }
+
+            r = mailimap_socket_starttls(mImap);
+            if (hasError(r)) {
+                MCLog("no TLS %i", r);
+                * pError = ErrorTLSNotAvailable;
+                goto close;
+            }
+        }
+        if (!checkCertificate()) {
+            MCLog("ssl connect certificate ERROR %d", r);
+            * pError = ErrorCertificate;
+            goto close;
+        }                
+        break;        
+        
         case ConnectionTypeStartTLS:
         MCLog("STARTTLS connect");
         r = mailimap_socket_connect_voip(mImap, MCUTF8(mHostname), mPort, isVoIPEnabled());
