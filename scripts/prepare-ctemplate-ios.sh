@@ -48,7 +48,11 @@ mkdir -p "$srcdir"
 # version=`git rev-parse HEAD | cut -c1-10`
 version="ccca4faf79~1"
 
-if test -f "$resultdir/ctemplate-ios-$build_version.zip" ; then
+# <<<<<<< HEAD
+# if test -f "$resultdir/ctemplate-ios-$build_version.zip" ; then
+# =======
+if test -f "$resultdir/ctemplate-ios-$version.zip" ; then
+# >>>>>>> custom/cyphermail
 	echo install from cache
   # popd >/dev/null
 	rm -rf ../Externals/ctemplate-ios
