@@ -2818,11 +2818,11 @@ static struct mailimap_search_key * searchKeyFromSearchExpression(IMAPSearchExpr
         }
         case IMAPSearchKindGmailThreadID:
         {
-            return mailimap_search_key_new_xgmthrid(expression->longNumber());
+//            return mailimap_search_key_new_xgmthrid(expression->longNumber());
         }
         case IMAPSearchKindGmailMessageID:
         {
-            return mailimap_search_key_new_xgmmsgid(expression->longNumber());
+//            return mailimap_search_key_new_xgmmsgid(expression->longNumber());
         }
         case IMAPSearchKindRead:
         {
@@ -2924,7 +2924,7 @@ static struct mailimap_search_key * searchKeyFromSearchExpression(IMAPSearchExpr
         }
         case IMAPSearchKindGmailRaw:
         {
-            return mailimap_search_key_new_xgmraw(strdup(expression->value()->UTF8Characters()));
+//            return mailimap_search_key_new_xgmraw(strdup(expression->value()->UTF8Characters()));
         }
         case IMAPSearchKindOr:
         {

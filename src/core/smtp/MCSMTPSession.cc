@@ -558,14 +558,15 @@ void SMTPSession::login(ErrorCode * pError)
             break;
         }
         
-        case AuthTypeXOAuth2Outlook: {
-            const char * utf8Username = MCUTF8(mUsername);
-            if (utf8Username == NULL) {
-                utf8Username = "";
-            }
-            r = mailsmtp_oauth2_outlook_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
-            break;
-        }
+//        case AuthTypeXOAuth2Outlook: {
+//            FIXME: UPGRADE NEEDED
+//            const char * utf8Username = MCUTF8(mUsername);
+//            if (utf8Username == NULL) {
+//                utf8Username = "";
+//            }
+//            r = mailsmtp_oauth2_outlook_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
+//            break;
+//        }
     }
     if (r == MAILSMTP_ERROR_STREAM) {
         * pError = ErrorConnection;
