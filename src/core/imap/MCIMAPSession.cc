@@ -1822,8 +1822,8 @@ fetch_imap(mailimap * imap, uint32_t uid,
     
     mailimap_fetch_list_free(fetch_result);
     
-    if (text == NULL)
-        return MAILIMAP_ERROR_FETCH;
+//    if (text == NULL)
+//        return MAILIMAP_ERROR_FETCH;
     
     * result = text;
     * result_len = text_length;
