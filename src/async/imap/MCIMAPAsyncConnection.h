@@ -114,7 +114,7 @@ namespace mailcore {
         
         virtual IMAPFetchContentOperation * fetchMessageByUIDOperation(String * folder, uint32_t uid);
         virtual IMAPFetchContentOperation * fetchMessageAttachmentByUIDOperation(String * folder, uint32_t uid, String * partID,
-                                                                                 Encoding encoding);
+                                                                                 Encoding encoding, uint32_t maxSize);
         
         virtual IMAPOperation * storeFlagsOperation(String * folder, IndexSet * uids, IMAPStoreFlagsRequestKind kind, MessageFlag flags, Array * customFlags);
         virtual IMAPOperation * storeLabelsOperation(String * folder, IndexSet * uids, IMAPStoreFlagsRequestKind kind, Array * labels);
@@ -174,6 +174,7 @@ namespace mailcore {
         virtual String * lastFolder();
         
         virtual void tryAutomaticDisconnect();
+        virtual void tryAutomaticDisconnectNow();
         virtual void queueStartRunning();
         virtual void queueStoppedRunning();
         

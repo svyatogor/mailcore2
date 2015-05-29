@@ -107,6 +107,10 @@ MCO_OBJC_SYNTHESIZE_SCALAR(BOOL, BOOL, setAllowsFolderConcurrentAccessEnabled, a
 MCO_OBJC_SYNTHESIZE_SCALAR(unsigned int, unsigned int, setMaximumConnections, maximumConnections)
 MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue, dispatchQueue);
 
+- (void) runInBackground {
+    self.dispatchQueue = dispatch_queue_create("com.douosvavvm.kryptomail.mailcorecallabck", NULL);
+}
+
 - (void) setDefaultNamespace:(MCOIMAPNamespace *)defaultNamespace
 {
     _session->setDefaultNamespace(MCO_FROM_OBJC(IMAPNamespace, defaultNamespace));
@@ -337,6 +341,7 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
                                                                                                    uid,
                                                                                                    [partID mco_mcString],
                                                                                                    (Encoding) encoding,
+                                                                                                   0,
                                                                                                    urgent);
     return MCO_TO_OBJC_OP(coreOp);
 }
@@ -347,6 +352,21 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
                                                                          encoding:(MCOEncoding)encoding
 {
     return [self fetchMessageAttachmentByUIDOperationWithFolder:folder uid:uid partID:partID encoding:encoding urgent:NO];
+}
+
+- (MCOIMAPFetchContentOperation *) fetchMessageAttachmentByUIDOperationWithFolder:(NSString *)folder
+                                                                              uid:(uint32_t)uid
+                                                                           partID:(NSString *)partID
+                                                                         encoding:(MCOEncoding)encoding
+                                                                          maxSize:(uint32_t)maxSize
+{
+    IMAPFetchContentOperation * coreOp = MCO_NATIVE_INSTANCE->fetchMessageAttachmentByUIDOperation([folder mco_mcString],
+                                                                                                   uid,
+                                                                                                   [partID mco_mcString],
+                                                                                                   (Encoding) encoding,
+                                                                                                   maxSize,
+                                                                                                   NO);
+    return MCO_TO_OBJC_OP(coreOp);
 }
 
 - (MCOIMAPOperation *) storeFlagsOperationWithFolder:(NSString *)folder

@@ -403,6 +403,9 @@
                                                                  requestKind:(MCOIMAPMessagesRequestKind)requestKind
                                                                      numbers:(MCOIndexSet *)numbers;
 
+//- (MCOIMAPFetchMessagesOperation *) fetchMessagesIndexByNumberOperationWithFolder:(NSString *)folder
+//                                                                          numbers:(MCOIndexSet *)numbers;
+
 /**
  Returns an operation to sync the last changes related to the given message list given a modSeq.
 
@@ -497,6 +500,12 @@ vanishedMessages will be set only for servers that support QRESYNC. See [RFC5162
                                                                               uid:(uint32_t)uid
                                                                            partID:(NSString *)partID
                                                                          encoding:(MCOEncoding)encoding;
+
+- (MCOIMAPFetchContentOperation *) fetchMessageAttachmentByUIDOperationWithFolder:(NSString *)folder
+                                                                              uid:(uint32_t)uid
+                                                                           partID:(NSString *)partID
+                                                                         encoding:(MCOEncoding)encoding
+                                                                          maxSize:(uint32_t)maxSize;
 
 /** @name General IMAP Actions */
 
@@ -701,7 +710,7 @@ vanishedMessages will be set only for servers that support QRESYNC. See [RFC5162
     }];
  */
 - (MCOIMAPOperation *) disconnectOperation;
-
+- (void) runInBackground;
 @end
 
 #endif

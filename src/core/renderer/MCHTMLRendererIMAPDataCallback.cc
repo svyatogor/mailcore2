@@ -19,7 +19,7 @@ HTMLRendererIMAPDataCallback::HTMLRendererIMAPDataCallback(IMAPSession * session
 
 Data * HTMLRendererIMAPDataCallback::dataForIMAPPart(String * folder, IMAPPart * part)
 {
-    return mSession->fetchMessageAttachmentByUID(folder, mUid, part->partID(), part->encoding(), NULL, &mError);
+    return mSession->fetchMessageAttachmentByUID(folder, mUid, part->partID(), part->encoding(), 0, NULL, &mError);
 }
 
 ErrorCode  HTMLRendererIMAPDataCallback::error()

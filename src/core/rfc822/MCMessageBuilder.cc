@@ -187,7 +187,7 @@ static struct mailmime * get_plain_text_part(const char * mime_type, const char 
     
     mechanism = MAILMIME_MECHANISM_7BIT;
     if (needsQuotedPrintable) {
-        mechanism = MAILMIME_MECHANISM_QUOTED_PRINTABLE;
+        mechanism = MAILMIME_MECHANISM_BASE64;
     }
     return get_text_part(mime_type, charset, content_id, description, text, length, mechanism);
 }
@@ -196,7 +196,7 @@ static struct mailmime * get_other_text_part(const char * mime_type, const char 
                                       const char * description,
                                       const char * text, size_t length)
 {
-    return get_text_part(mime_type, charset, content_id, description, text, length, MAILMIME_MECHANISM_QUOTED_PRINTABLE);
+    return get_text_part(mime_type, charset, content_id, description, text, length, MAILMIME_MECHANISM_BASE64);
 }
 
 static struct mailmime * get_file_part(const char * filename, const char * mime_type, int is_inline,

@@ -1,6 +1,9 @@
 #!/bin/sh
 
-if xcodebuild -showsdks|grep iphoneos7.1 >/dev/null ; then
+if xcodebuild -showsdks|grep iphoneos8.1 >/dev/null ; then
+	sdkversion=8.1
+    devicearchs="armv7 armv7s arm64"
+elif xcodebuild -showsdks|grep iphoneos7.1 >/dev/null ; then
 	sdkversion=7.1
     devicearchs="armv7 armv7s arm64"
 elif xcodebuild -showsdks|grep iphoneos7.0 >/dev/null ; then
@@ -15,7 +18,7 @@ else
 fi	
 
 url="https://github.com/dinhviethoa/libetpan.git"
-rev=1e5bb22b0b560175faed91430c6ee7de0c818f88
+rev=ea6bc2eda09446b8c52406c3aa6a4e2273ff87db
 
 pushd `dirname $0` > /dev/null
 scriptpath=`pwd`
@@ -46,34 +49,36 @@ mkdir -p "$srcdir"
 #   git clone $url
 #   cd libetpan
 # fi
-#version=`git rev-parse HEAD | cut -c1-10`
-# version=`echo $rev | cut -c1-10`
-version="6c030e4f5c"
-
-if test -f "$resultdir/libetpan-ios-$version.zip" ; then
-	echo install from cache
-  # popd >/dev/null
-	rm -rf ../Externals/libetpan-ios
-	rm -rf ../Externals/libsasl-ios
-	mkdir -p ../Externals/tmp
-	unzip -q "$resultdir/libetpan-ios-$version.zip" -d ../Externals/tmp
-	unzip -q "$resultdir/libsasl-ios-$version.zip" -d ../Externals/tmp
-	mv "../Externals/tmp/libetpan-ios-$version/libetpan-ios" ../Externals
-	mv "../Externals/tmp/libsasl-ios-$version/libsasl-ios" ../Externals
-  mkdir -p ../Externals/installed
-  ln -sf "$resultdir/libetpan-ios-$version.zip" ../Externals/installed
-  ln -sf "$resultdir/libsasl-ios-$version.zip" ../Externals/installed
-	rm -rf ../Externals/tmp
-	exit 0
-else
-  echo "OUCH!"
-  exit 1
-fi
+# version=`git rev-parse HEAD | cut -c1-10`
+version=`echo $rev | cut -c1-10`
+# version="6c030e4f5c"
+# 
+# if test -f "$resultdir/libetpan-ios-$version.zip" ; then
+#   echo install from cache
+#   # popd >/dev/null
+#   rm -rf ../Externals/libetpan-ios
+#   rm -rf ../Externals/libsasl-ios
+#   mkdir -p ../Externals/tmp
+#   unzip -q "$resultdir/libetpan-ios-$version.zip" -d ../Externals/tmp
+#   unzip -q "$resultdir/libsasl-ios-$version.zip" -d ../Externals/tmp
+#   mv "../Externals/tmp/libetpan-ios-$version/libetpan-ios" ../Externals
+#   mv "../Externals/tmp/libsasl-ios-$version/libsasl-ios" ../Externals
+#   mkdir -p ../Externals/installed
+#   ln -sf "$resultdir/libetpan-ios-$version.zip" ../Externals/installed
+#   ln -sf "$resultdir/libsasl-ios-$version.zip" ../Externals/installed
+#   rm -rf ../Externals/tmp
+#   exit 0
+# else
+#   echo "OUCH!"
+#   exit 1
+# fi
 popd >/dev/null
 
 pushd . >/dev/null
 
-cp -R "$builddir/downloads/libetpan" "$srcdir/libetpan"
+# cp -R "$builddir/downloads/libetpan" "$srcdir/libetpan"
+cd "$srcdir"
+git clone https://github.com/dinhviethoa/libetpan.git
 cd "$srcdir/libetpan"
 git checkout $rev
 echo building libetpan

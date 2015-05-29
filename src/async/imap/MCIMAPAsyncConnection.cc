@@ -46,6 +46,7 @@ namespace mailcore {
     
     class IMAPOperationQueueCallback : public Object, public OperationQueueCallback {
     public:
+        bool disconnect = false;
         IMAPOperationQueueCallback(IMAPAsyncConnection * connection) {
             mConnection = connection;
         }
@@ -61,7 +62,8 @@ namespace mailcore {
         
         virtual void queueStoppedRunning() {
             mConnection->setQueueRunning(false);
-            mConnection->tryAutomaticDisconnect();
+            if (disconnect) mConnection->session()->disconnect();
+            disconnect = false;
             mConnection->owner()->operationRunningStateChanged();
             mConnection->queueStoppedRunning();
         }
@@ -409,7 +411,7 @@ IMAPFetchContentOperation * IMAPAsyncConnection::fetchMessageByUIDOperation(Stri
 }
 
 IMAPFetchContentOperation * IMAPAsyncConnection::fetchMessageAttachmentByUIDOperation(String * folder, uint32_t uid, String * partID,
-                                                                                   Encoding encoding)
+                                                                                   Encoding encoding, uint32_t maxSize)
 {
     IMAPFetchContentOperation * op = new IMAPFetchContentOperation();
     op->setSession(this);
@@ -417,6 +419,7 @@ IMAPFetchContentOperation * IMAPAsyncConnection::fetchMessageAttachmentByUIDOper
     op->setUid(uid);
     op->setPartID(partID);
     op->setEncoding(encoding);
+    op->setMaxSize(maxSize);
     op->autorelease();
     return op;
 }
@@ -554,6 +557,7 @@ unsigned int IMAPAsyncConnection::operationsCount()
 
 void IMAPAsyncConnection::cancelAllOperations()
 {
+    mQueueCallback->disconnect = true;
     mQueue->cancelAllOperations();
 }
 
@@ -565,6 +569,17 @@ void IMAPAsyncConnection::runOperation(IMAPOperation * operation)
         mScheduledAutomaticDisconnect = false;
     }
     mQueue->addOperation(operation);
+}
+
+void IMAPAsyncConnection::tryAutomaticDisconnectNow()
+{
+    // It's safe since no thread is running when this function is called.
+    if (mSession->isDisconnected()) {
+        return;
+    }
+    
+    IMAPOperation * op = disconnectOperation();
+    op->start();
 }
 
 void IMAPAsyncConnection::tryAutomaticDisconnect()

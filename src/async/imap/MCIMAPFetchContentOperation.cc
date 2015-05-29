@@ -18,6 +18,7 @@ IMAPFetchContentOperation::IMAPFetchContentOperation()
     mUid = 0;
     mPartID = NULL;
     mEncoding = Encoding7Bit;
+    mMaxSize = 0;
     mData = NULL;
 }
 
@@ -33,6 +34,16 @@ void IMAPFetchContentOperation::setUid(uint32_t uid)
 }
 
 uint32_t IMAPFetchContentOperation::uid()
+{
+    return mUid;
+}
+
+void IMAPFetchContentOperation::setMaxSize(uint32_t maxSize)
+{
+    mMaxSize = maxSize;
+}
+
+uint32_t IMAPFetchContentOperation::maxSize()
 {
     return mUid;
 }
@@ -66,7 +77,7 @@ void IMAPFetchContentOperation::main()
 {
     ErrorCode error;
     if (mPartID != NULL) {
-        mData = session()->session()->fetchMessageAttachmentByUID(folder(), mUid, mPartID, mEncoding, this, &error);
+        mData = session()->session()->fetchMessageAttachmentByUID(folder(), mUid, mPartID, mEncoding, mMaxSize, this, &error);
     }
     else {
         mData = session()->session()->fetchMessageByUID(folder(), mUid, this, &error);

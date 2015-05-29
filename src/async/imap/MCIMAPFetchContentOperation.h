@@ -30,6 +30,9 @@ namespace mailcore {
         virtual void setEncoding(Encoding encoding);
         virtual Encoding encoding();
         
+        virtual void setMaxSize(uint32_t maxSize);
+        virtual uint32_t maxSize();
+        
         // Result.
         virtual Data * data();
         
@@ -41,6 +44,7 @@ namespace mailcore {
         String * mPartID;
         Encoding mEncoding;
         Data * mData;
+        uint32_t mMaxSize;
         
     };
     

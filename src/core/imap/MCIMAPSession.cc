@@ -23,6 +23,7 @@
 #include "MCHTMLBodyRendererTemplateCallback.h"
 #include "MCCertificateUtils.h"
 #include "MCIMAPIdentity.h"
+#include <iostream>
 
 using namespace mailcore;
 
@@ -389,6 +390,7 @@ void IMAPSession::init()
     mFolderMsgCount = 0;
     mFirstUnseenUid = 0;
     mYahooServer = false;
+    mExchangeServer = false;
     mLastFetchedSequenceNumber = 0;
     mCurrentFolder = NULL;
     pthread_mutex_init(&mIdleLock, NULL);
@@ -699,8 +701,10 @@ void IMAPSession::connect(ErrorCode * pError)
     mailstream_low_set_identifier(low, identifier);
     
     if (mImap->imap_response != NULL) {
+        
         MC_SAFE_REPLACE_RETAIN(String, mWelcomeString, String::stringWithUTF8Characters(mImap->imap_response));
         mYahooServer = (mWelcomeString->locationOfString(MCSTR("yahoo.com")) != -1);
+        mExchangeServer = (mWelcomeString->locationOfString(MCSTR("Microsoft Exchange")) != -1);
     }
     
     mState = STATE_CONNECTED;
@@ -2603,7 +2607,7 @@ Data * IMAPSession::fetchMessageByUID(String * folder, uint32_t uid,
 }
 
 Data * IMAPSession::fetchMessageAttachmentByUID(String * folder, uint32_t uid, String * partID,
-    Encoding encoding, IMAPProgressCallback * progressCallback, ErrorCode * pError)
+    Encoding encoding, uint32_t maxSize, IMAPProgressCallback * progressCallback, ErrorCode * pError)
 {
     struct mailimap_fetch_type * fetch_type;
     struct mailimap_fetch_att * fetch_att;
@@ -2637,7 +2641,10 @@ Data * IMAPSession::fetchMessageAttachmentByUID(String * folder, uint32_t uid, S
     }
     section_part = mailimap_section_part_new(sec_list);
     section = mailimap_section_new_part(section_part);
-    fetch_att = mailimap_fetch_att_new_body_peek_section(section);
+    if (maxSize > 0)
+        fetch_att = mailimap_fetch_att_new_body_peek_section_partial(section, 0, maxSize);
+    else
+        fetch_att = mailimap_fetch_att_new_body_peek_section(section);
     fetch_type = mailimap_fetch_type_new_fetch_att(fetch_att);
     
     r = fetch_imap(mImap, uid, fetch_type, &text, &text_length);
@@ -2961,7 +2968,7 @@ IndexSet * IMAPSession::search(String * folder, IMAPSearchExpression * expressio
     clist * result_list = NULL;
     
     const char * charset = "utf-8";
-    if (mYahooServer) {
+    if (mYahooServer || mExchangeServer) {
         charset = NULL;
     }
     int r = mailimap_uid_search(mImap, charset, key, &result_list);

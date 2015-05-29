@@ -3,7 +3,7 @@
 #define MAILCORE_MCOCONSTANTS_H
 
 /** It's the connection type.*/
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, MCOConnectionType) {
     /** Clear-text connection for the protocol.*/
     MCOConnectionTypeClear             = 1 << 0,
     /** Clear-text connection at the beginning, then switch to encrypted connection using TLS/SSL*/
@@ -12,7 +12,7 @@ typedef enum {
     /** Encrypted connection using TLS/SSL.*/
     MCOConnectionTypeTLS               = 1 << 2,
     MCOConnectionTypeSmartTLS          = 1 << 3,
-} MCOConnectionType;
+} ;
 
 /** It's the authentication type.*/
 typedef enum {
@@ -125,7 +125,7 @@ typedef enum {
 } MCOEncoding;
 
 /** It's the information to fetch for a given message in the IMAP FETCH request.*/
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, MCOIMAPMessagesRequestKind) {
     /** UID of the message.*/
     MCOIMAPMessagesRequestKindUid            = 0, /** This is the default and it's always fetched*/
     /** Flags of the message.*/
@@ -151,7 +151,7 @@ typedef enum {
     /* Request size of message */
     MCOIMAPMessagesRequestKindSize           = 1 << 10,
 
-} MCOIMAPMessagesRequestKind;
+};// MCOIMAPMessagesRequestKind;
 
 /** It defines the behavior of the STORE flags request.*/
 typedef enum {

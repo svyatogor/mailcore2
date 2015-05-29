@@ -109,7 +109,7 @@ namespace mailcore {
         virtual Data * fetchMessageByUID(String * folder, uint32_t uid,
                                          IMAPProgressCallback * progressCallback, ErrorCode * pError);
         virtual Data * fetchMessageAttachmentByUID(String * folder, uint32_t uid, String * partID,
-                                                   Encoding encoding, IMAPProgressCallback * progressCallback, ErrorCode * pError);
+                                                   Encoding encoding, uint32_t maxSize, IMAPProgressCallback * progressCallback, ErrorCode * pError);
         virtual HashMap * fetchMessageNumberUIDMapping(String * folder, uint32_t fromUID, uint32_t toUID,
                                                        ErrorCode * pError);
         
@@ -233,6 +233,7 @@ namespace mailcore {
         unsigned int mFolderMsgCount;
         uint32_t mFirstUnseenUid;
         bool mYahooServer;
+        bool mExchangeServer;
         
         unsigned int mLastFetchedSequenceNumber;
         String * mCurrentFolder;

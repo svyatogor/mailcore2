@@ -417,10 +417,10 @@ IMAPFetchContentOperation * IMAPAsyncSession::fetchMessageByUIDOperation(String 
 }
 
 IMAPFetchContentOperation * IMAPAsyncSession::fetchMessageAttachmentByUIDOperation(String * folder, uint32_t uid, String * partID,
-                                                                         Encoding encoding, bool urgent)
+                                                                         Encoding encoding, uint32_t maxSize, bool urgent)
 {
     IMAPAsyncConnection * session = sessionForFolder(folder, urgent);
-    return session->fetchMessageAttachmentByUIDOperation(folder, uid, partID, encoding);
+    return session->fetchMessageAttachmentByUIDOperation(folder, uid, partID, encoding, maxSize);
 }
 
 IMAPOperation * IMAPAsyncSession::storeFlagsOperation(String * folder, IndexSet * uids, IMAPStoreFlagsRequestKind kind, MessageFlag flags, Array * customFlags)
