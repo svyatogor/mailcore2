@@ -3201,8 +3201,8 @@
 				PRODUCT_NAME = "MailCore-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SYMROOT = "/Users/sergeyk/Projects/KryptoMail/mailcore2/build-mac/Build";
-				VALID_ARCHS = "$(ARCHS_STANDARD) armv7s";
+				SYMROOT = ./build;
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 			};
 			name = Debug;
 		};
@@ -3223,8 +3223,8 @@
 				PRODUCT_NAME = "MailCore-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SYMROOT = "/Users/sergeyk/Projects/KryptoMail/mailcore2/build-mac/Build";
-				VALID_ARCHS = "$(ARCHS_STANDARD) armv7s";
+				SYMROOT = ./build;
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 			};
 			name = Release;
 		};
