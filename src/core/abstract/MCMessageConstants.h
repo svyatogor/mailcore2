@@ -177,6 +177,7 @@ namespace mailcore {
         IMAPSearchKindSubject,
         IMAPSearchKindContent,
         IMAPSearchKindUIDs,
+        IMAPSearchKindNumbers,
         IMAPSearchKindHeader,
         IMAPSearchKindRead,
         IMAPSearchKindUnread,

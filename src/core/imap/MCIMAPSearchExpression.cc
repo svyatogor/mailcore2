@@ -9,6 +9,7 @@ void IMAPSearchExpression::init()
     mValue = NULL;
     mLongNumber = 0;
     mUids  = NULL;
+    mNumbers = NULL;
     mLeftExpression = NULL;
     mRightExpression = NULL;
 }
@@ -26,6 +27,7 @@ IMAPSearchExpression::IMAPSearchExpression(IMAPSearchExpression * other)
     MC_SAFE_REPLACE_COPY(String, mHeader, other->mHeader);
     MC_SAFE_REPLACE_COPY(String, mValue, other->mValue);
     MC_SAFE_REPLACE_COPY(IndexSet, mUids, other->mUids);
+    MC_SAFE_REPLACE_COPY(IndexSet, mNumbers, other->mNumbers);
     MC_SAFE_REPLACE_COPY(IMAPSearchExpression, mLeftExpression, other->mLeftExpression);
     MC_SAFE_REPLACE_COPY(IMAPSearchExpression, mRightExpression, other->mRightExpression);
 }
@@ -35,6 +37,7 @@ IMAPSearchExpression::~IMAPSearchExpression()
     MC_SAFE_RELEASE(mHeader);
     MC_SAFE_RELEASE(mValue);
     MC_SAFE_RELEASE(mUids);
+    MC_SAFE_RELEASE(mNumbers);
     MC_SAFE_RELEASE(mLeftExpression);
     MC_SAFE_RELEASE(mRightExpression);
 }
@@ -68,6 +71,9 @@ String * IMAPSearchExpression::description()
         case IMAPSearchKindUIDs:
             return String::stringWithUTF8Format("<%s:%p UIDs %s>", MCUTF8(className()), this,
                                                 MCUTF8(mUids->description()));
+        case IMAPSearchKindNumbers:
+            return String::stringWithUTF8Format("<%s:%p Numbers %s>", MCUTF8(className()), this,
+                                                MCUTF8(mNumbers->description()));
         case IMAPSearchKindContent:
         return String::stringWithUTF8Format("<%s:%p Content %s>", MCUTF8(className()), this,
             MCUTF8(mValue->description()));
@@ -168,6 +174,11 @@ IMAPSearchExpression * IMAPSearchExpression::searchNumbers(IndexSet * numbers)
 	expr->mKind = IMAPSearchKindNumbers;
 	MC_SAFE_REPLACE_COPY(IndexSet, expr->mUids, numbers);
 	return (IMAPSearchExpression *) expr->autorelease();
+}
+
+IndexSet * IMAPSearchExpression::numbers()
+{
+    return mNumbers;
 }
 
 IMAPSearchExpression * IMAPSearchExpression::searchHeader(String * header, String * value)

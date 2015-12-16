@@ -190,6 +190,10 @@ namespace mailcore {
         /** Check if the automatic query of the capabilities of the IMAP server is enabled. */
         virtual bool isAutomaticConfigurationEnabled();
         
+        bool mYahooServer;
+        bool mExchangeServer;
+
+        
     public: // private
         virtual void loginIfNeeded(ErrorCode * pError);
         virtual void connectIfNeeded(ErrorCode * pError);
@@ -232,8 +236,6 @@ namespace mailcore {
         uint64_t mModSequenceValue;
         unsigned int mFolderMsgCount;
         uint32_t mFirstUnseenUid;
-        bool mYahooServer;
-        bool mExchangeServer;
         
         unsigned int mLastFetchedSequenceNumber;
         String * mCurrentFolder;
