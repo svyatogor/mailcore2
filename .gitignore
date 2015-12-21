@@ -9,3 +9,6 @@ example/ios/iOS UI Test/DerivedData
 scripts/prebuilt.list
 
 
+.build/
+build-iPhoneSimulator/
+build-mac/build/
